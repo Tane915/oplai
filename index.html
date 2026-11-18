@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oplai｜面向一人商家的 AI 自动化链路工具</title>
+<meta name="description" content="Oplai 源自 OPC Link AI。面向一人商家，用 AI 串联商品、客户、内容与订单，提供智能体、知识库与自动化工作流。" />
+<meta name="theme-color" content="#0B1730" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" />
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+  --ink:#0E1B33;
+  --ink2:#35435E;
+  --muted:#6B7A93;
+  --line:#E3E9F3;
+  --bg:#F5F7FB;
+  --soft:#F8FAFD;
+  --white:#FFFFFF;
+  --brand:#3B6BFF;
+  --brand2:#12B8A6;
+  --warm:#FF8A4C;
+  --dark:#0B1730;
+  --radius:20px;
+  --shadow:0 10px 34px rgba(19,38,79,.07);
+  --shadow-lg:0 24px 60px rgba(19,38,79,.13);
+  --font:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{width:min(1320px,calc(100% - 192px));margin:0 auto}
+section{scroll-margin-top:88px}
+
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:60;background:rgba(245,247,251,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(227,233,243,.8)}
+.nav{height:72px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:11px;flex:none}
+.logo-mark{display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:10px;background:var(--dark);color:#fff;font-size:13px;font-weight:800;letter-spacing:.06em;line-height:1}
+.logo-mark .sep{width:1px;height:12px;background:rgba(255,255,255,.28);margin:0 2px}
+.logo-mark .l{background:linear-gradient(120deg,#6E9BFF,#3BE0C6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo-txt{display:flex;flex-direction:column;align-items:flex-start;gap:1px;line-height:1.2}
+.logo-txt b{font-size:17px;letter-spacing:-.02em;white-space:nowrap}
+.logo-txt span{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.03em;font-weight:600;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:26px;margin-left:auto}
+.nav-links a{font-size:13.5px;font-weight:600;color:var(--ink2);transition:color .2s;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--brand)}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:8px}
+.lang{display:flex;background:#fff;border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px}
+.lang button{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:6px;color:var(--muted);transition:.2s}
+.lang button.on{background:var(--dark);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13.5px;font-weight:700;line-height:1.5;text-align:center;padding:11px 20px;border-radius:11px;transition:transform .2s,box-shadow .2s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 8px 20px rgba(59,107,255,.26)}
+.btn-primary:hover{box-shadow:0 12px 26px rgba(59,107,255,.36)}
+.btn-ghost{background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.22)}
+.btn-ghost:hover{background:rgba(255,255,255,.16)}
+.btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-sm{padding:9px 15px;font-size:12.5px}
+.menu-btn{display:none;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;background:#fff;align-items:center;justify-content:center}
+.mobile-menu{display:none;padding:12px 0 18px;border-top:1px solid var(--line)}
+.mobile-menu a{display:block;padding:10px 4px;font-size:14px;font-weight:600;color:var(--ink2)}
+.mobile-menu.open{display:block}
+
+/* ---------- hero ---------- */
+.hero-wrap{padding:26px 0 0}
+.hero{position:relative;overflow:hidden;background:radial-gradient(900px 500px at 78% 12%,rgba(59,107,255,.30),transparent 62%),radial-gradient(600px 460px at 96% 92%,rgba(18,184,166,.16),transparent 65%),var(--dark);border-radius:28px;color:#fff;box-shadow:var(--shadow-lg)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(120deg,#000,transparent 72%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:center;padding:70px 64px 66px}
+.hero-word{position:absolute;right:26px;top:14px;z-index:0;font-size:clamp(108px,17vw,262px);line-height:1;font-family:'Orbitron','Arial Black',system-ui,sans-serif;font-weight:900;letter-spacing:.02em;color:rgba(255,255,255,.019);white-space:nowrap;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.3) 16%,rgba(0,0,0,.62) 42%,#000 82%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.3) 16%,rgba(0,0,0,.62) 42%,#000 82%)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;color:#C9D8F5}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--brand2);box-shadow:0 0 0 4px rgba(18,184,166,.16)}
+.eyebrow em{font-style:normal;color:#8FA6CC;padding-left:9px;border-left:1px solid rgba(255,255,255,.2)}
+h1{font-size:clamp(38px,4.5vw,62px);line-height:1.16;letter-spacing:-.035em;font-weight:800;margin:26px 0 0}
+h1 span{display:block}
+h1 .line2{background:linear-gradient(100deg,#7FA6FF 5%,#49E0C4 92%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.slogan-en{margin-top:16px;font-size:16px;font-weight:600;letter-spacing:.01em;color:#AFC3E6}
+.hero-desc{margin-top:22px;max-width:540px;font-size:15px;line-height:1.85;color:#B8C7E2}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-note{display:flex;align-items:center;gap:9px;margin-top:30px;font-size:11.5px;color:#8498BC}
+.hero-note .ico{width:15px;height:15px;color:var(--brand2)}
+
+/* chain diagram */
+.chain{position:relative;width:min(100%,440px);aspect-ratio:1;margin:0 auto}
+.chain svg.lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.chain .glow{fill:none;stroke:url(#lg);stroke-width:2;opacity:.75;stroke-linecap:round}
+.chain .flow{fill:none;stroke:rgba(120,215,255,.85);stroke-width:2;stroke-linecap:round;stroke-dasharray:5 16;animation:dash 2.6s linear infinite}
+.chain .orbit{fill:none;stroke:rgba(127,208,255,.26);stroke-width:1;stroke-dasharray:2 9;transform-origin:200px 200px;animation:spin 46s linear infinite}
+.chain .orbit2{fill:none;stroke:rgba(127,208,255,.15);stroke-width:1;transform-origin:200px 200px}
+.chain .ring-a{fill:none;stroke:#7FD0FF;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:64 941.3;filter:drop-shadow(0 0 6px rgba(127,208,255,.75));animation:ringA 7s linear infinite}
+.chain .ring-b{fill:none;stroke:rgba(127,208,255,.62);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:34 1071.8;filter:drop-shadow(0 0 5px rgba(127,208,255,.5));animation:ringB 13s linear infinite reverse}
+@keyframes ringA{to{stroke-dashoffset:-1005.3}}
+@keyframes ringB{to{stroke-dashoffset:-1105.8}}
+@keyframes dash{to{stroke-dashoffset:-42}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chain-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:31%;aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:radial-gradient(circle at 35% 25%,#2D55C8,#12265A 72%);border:1px solid rgba(140,180,255,.5);box-shadow:0 0 0 10px rgba(59,107,255,.09),0 0 46px rgba(59,107,255,.5),inset 0 1px 0 rgba(255,255,255,.25)}
+.chain-center b{font-size:clamp(15px,2vw,21px);font-weight:800;letter-spacing:.02em}
+.chain-center small{font-size:9px;letter-spacing:.17em;color:#A9C3F5;font-weight:700}
+.node{position:absolute;transform:translate(-50%,-50%);width:26%;min-width:88px;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);backdrop-filter:blur(8px);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.16);transition:transform .3s,background .3s}
+.node:hover{transform:translate(-50%,-50%) translateY(-4px);background:rgba(255,255,255,.15)}
+.node .ico{width:20px;height:20px;margin:0 auto 5px;color:#7FE3D2}
+.node b{display:block;font-size:12.5px;font-weight:700;line-height:1.3}
+.node small{display:block;font-size:9.5px;color:#9DB2D6;letter-spacing:.04em;margin-top:1px}
+.node.n1{left:50%;top:15.5%}.node.n2{left:85%;top:50%}.node.n3{left:50%;top:84.5%}.node.n4{left:15%;top:50%}
+
+/* ---------- generic section ---------- */
+.sec{padding:96px 0}
+.sec-soft{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec-head{max-width:660px;margin-bottom:46px}
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.tag::before{content:"";width:18px;height:2px;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:2px}
+h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-weight:800;margin-top:14px}
+.sec-head p{margin-top:14px;color:var(--muted);font-size:15px;line-height:1.85}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:#CDD9F0}
+.card-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#EAF0FF,#E4F8F4);color:var(--brand);margin-bottom:22px}
+.card-icon .ico{width:23px;height:23px}
+.card h3{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.card h3 small{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--muted);text-transform:uppercase;margin-top:5px}
+.card p{margin-top:14px;font-size:13.8px;line-height:1.85;color:var(--ink2)}
+
+/* brand meaning */
+.brand-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.brand-cell{padding:32px 30px;border-right:1px solid var(--line)}
+.brand-cell:last-child{border-right:0}
+.brand-cell .k{font-size:28px;font-weight:800;letter-spacing:-.04em;background:linear-gradient(100deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-cell .sub{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.brand-cell p{margin-top:16px;font-size:13.6px;line-height:1.82;color:var(--ink2)}
+.brand-foot{margin-top:20px;padding:16px 22px;border-left:3px solid var(--brand2);background:#F1F7F6;border-radius:0 10px 10px 0;font-size:13.5px;color:var(--ink2)}
+
+/* chain section */
+.chain-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
+.chain-text p{color:var(--ink2);font-size:14.5px;line-height:1.9;margin-top:16px;max-width:560px}
+.chain-text .btn{margin-top:28px}
+.loop-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.loop-item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+.loop-item .num{width:30px;height:30px;border-radius:9px;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:none}
+.loop-item h4{font-size:14.5px;font-weight:800}
+.loop-item p{font-size:12.8px;color:var(--muted);line-height:1.75;margin-top:6px}
+.ai-bar{margin-top:16px;border-radius:16px;padding:20px 24px;background:linear-gradient(100deg,#0B1730,#1B3573);color:#fff;display:flex;align-items:center;gap:14px}
+.ai-bar .ico{color:#5BE0C8;width:24px;height:24px}
+.ai-bar b{font-size:14px}
+.ai-bar span{font-size:12.5px;color:#AFC3E6;display:block;margin-top:2px}
+
+/* compare */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.compare-col{border-radius:var(--radius);padding:32px;border:1px solid var(--line);background:#fff}
+.compare-col.bad{background:#FBFCFE}
+.compare-col.good{border-color:#BFE9DF;background:linear-gradient(160deg,#F2FBF8,#FFFFFF 68%)}
+.compare-col h3{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800}
+.compare-col h3 .badge{font-size:10.5px;font-weight:800;letter-spacing:.08em;padding:4px 9px;border-radius:6px;text-transform:uppercase}
+.bad .badge{background:#EEF1F6;color:#7A879C}
+.good .badge{background:#D9F4EC;color:#0E8C74}
+.compare-col ul{list-style:none;margin-top:22px;display:grid;gap:14px}
+.compare-col li{display:flex;gap:11px;font-size:13.7px;line-height:1.7;color:var(--ink2)}
+.compare-col li .ico{width:17px;height:17px;margin-top:4px}
+.bad li .ico{color:#A7B2C4}
+.good li .ico{color:#12B8A6}
+
+/* use cases */
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.case{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);transition:.25s}
+.case:hover{transform:translateY(-4px);border-color:#CDD9F0}
+.case .ico{width:22px;height:22px;color:var(--brand)}
+.case h4{font-size:14.5px;font-weight:800;margin-top:18px}
+.case .old{font-size:12.4px;color:#96A2B5;margin-top:9px;text-decoration:line-through;text-decoration-color:#CBD3E0}
+.case .new{font-size:12.8px;color:var(--ink2);margin-top:6px;line-height:1.7}
+.case .new b{color:#0E8C74}
+
+/* cta */
+.cta{position:relative;overflow:hidden;margin:80px auto 90px;border-radius:26px;background:radial-gradient(700px 320px at 15% 0%,rgba(59,107,255,.32),transparent 65%),linear-gradient(110deg,#0B1730,#162C5C);color:#fff;padding:60px 64px;text-align:center}
+.cta::after{content:"";position:absolute;right:-70px;bottom:-150px;width:340px;height:340px;border:1px solid rgba(255,255,255,.09);border-radius:50%;box-shadow:0 0 0 46px rgba(255,255,255,.03),0 0 0 92px rgba(255,255,255,.02)}
+.cta h2{color:#fff;margin-top:0}
+.cta p{color:#B8C7E2;margin-top:14px;font-size:14.5px}
+.cta .btn{margin-top:28px;position:relative;z-index:1}
+/* ---------- footer ---------- */
+.site-footer{position:relative;overflow:hidden;background:radial-gradient(880px 420px at 10% -12%,rgba(59,107,255,.24),transparent 62%),radial-gradient(680px 380px at 92% -6%,rgba(18,184,166,.13),transparent 66%),#070D1A;color:#fff}
+.foot-top{padding:76px 0 0}
+.foot-grid{display:grid;grid-template-columns:1.6fr repeat(4,minmax(0,1fr));gap:44px}
+.f-logo{display:flex;align-items:center;gap:12px}
+.f-logo .logo-mark{padding:8px 12px;font-size:12.5px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);box-shadow:none}
+.f-logo b{font-size:19px;letter-spacing:-.02em}
+.f-tag{margin-top:20px;max-width:340px;font-size:13.2px;line-height:1.85;color:#95A5C0}
+.f-col h5{font-size:11.5px;font-weight:800;letter-spacing:.09em;color:#49E0C4;margin-bottom:16px}
+.f-col a{display:block;font-size:13.2px;color:#A6B4CB;padding:6px 0;transition:color .2s,transform .2s}
+.f-col a:hover{color:#fff;transform:translateX(2px)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:56px;padding:22px 0 0;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#7C8BA5}
+.foot-bottom .sep{color:rgba(255,255,255,.22);margin:0 8px}
+.foot-word{margin-top:26px;margin-bottom:-.14em;font-size:clamp(110px,23vw,340px);line-height:.74;font-weight:900;letter-spacing:-.045em;text-align:center;white-space:nowrap;color:rgba(255,255,255,.055);user-select:none;pointer-events:none}
+
+/* ---------- download modal ---------- */
+.modal-mask{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(9,20,42,.58);backdrop-filter:blur(5px)}
+.modal-mask.open{display:flex;animation:fadeIn .22s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{position:relative;width:min(100%,520px);max-height:calc(100vh - 40px);overflow-y:auto;background:#fff;border-radius:22px;padding:34px;box-shadow:0 30px 80px rgba(9,20,42,.3);animation:modalIn .28s cubic-bezier(.2,.8,.3,1)}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.modal-close{position:absolute;right:18px;top:18px;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--muted);background:#F4F6FA;transition:.2s}
+.modal-close:hover{background:#E9EEF7;color:var(--ink)}
+.modal-close .ico{width:16px;height:16px}
+.modal h3{font-size:23px;font-weight:800;letter-spacing:-.02em;padding-right:40px}
+.modal-sub{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.75}
+.dl-list{display:grid;gap:12px;margin-top:24px}
+.dl-card{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:15px;background:#FCFDFE;transition:.2s}
+.dl-card:hover{border-color:#CDD9F0;background:#fff}
+.dl-logo{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:800;flex:none}
+.dl-logo.baidu{background:linear-gradient(135deg,#4E86F2,#2454CE)}
+.dl-logo.quark{background:linear-gradient(135deg,#9B7BFF,#5B45DE)}
+.dl-info{flex:1;min-width:0}
+.dl-info b{display:block;font-size:14.5px;font-weight:800}
+.dl-status{display:inline-block;font-size:11.5px;color:var(--muted);margin-top:3px;cursor:default}
+.dl-status.has-code{color:var(--brand);cursor:pointer;font-weight:700}
+.dl-status.has-code:hover{text-decoration:underline}
+.dl-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:9px;background:var(--brand);color:#fff;box-shadow:0 5px 14px rgba(59,107,255,.22);transition:.2s}
+.dl-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(59,107,255,.3)}
+.dl-btn .ico{width:14px;height:14px}
+.dl-btn.off{background:#EDF1F7;color:#8A97AB;box-shadow:none;cursor:not-allowed;pointer-events:none}
+.modal-foot{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:11.8px;color:var(--muted);line-height:1.7}
+@media(max-width:560px){
+  .modal{padding:26px 20px}
+  .dl-card{flex-wrap:wrap;gap:12px}
+  .dl-info{flex-basis:calc(100% - 60px)}
+  .dl-btn{width:100%}
+}
+
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+@media(max-width:1080px){
+  .wrap{width:min(1320px,calc(100% - 112px))}
+  .nav-links{gap:18px}
+  .hero-inner{padding:56px 44px;grid-template-columns:1fr 1fr}
+  .case-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:38px 32px}
+  .foot-brand{grid-column:1/-1}
+  .f-tag{max-width:520px}
+}
+@media(max-width:860px){
+  .wrap{width:min(100% - 36px,1320px)}
+  .nav-links,.nav-right .btn{display:none}
+  .nav-right{margin-left:auto}
+  .menu-btn{display:flex}
+  .hero-inner{grid-template-columns:1fr;padding:48px 30px 40px;gap:20px}
+  .chain{width:min(100%,360px);margin:0 auto}
+  .hero-desc{max-width:100%}
+  .chain-layout{grid-template-columns:1fr;gap:28px}
+  .grid-3{grid-template-columns:1fr}
+  .brand-strip{grid-template-columns:1fr}
+  .brand-cell{border-right:0;border-bottom:1px solid var(--line)}
+  .brand-cell:last-child{border-bottom:0}
+  .compare{grid-template-columns:1fr}
+  .sec{padding:70px 0}
+  .cta{padding:48px 26px;margin:56px auto 60px}
+  .foot-top{padding:56px 0 0}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:34px 28px}
+  .foot-brand{grid-column:1/-1}
+  .foot-bottom{margin-top:40px}
+}
+@media(max-width:560px){
+  .nav{height:64px}
+  .logo-txt span{display:none}
+  .logo-txt b{font-size:15px}
+  .hero{border-radius:20px}
+  .hero-inner{padding:38px 22px 32px}
+  h1{font-size:36px}
+  .loop-list,.case-grid,.grid-2{grid-template-columns:1fr}
+  .node{min-width:74px;padding:9px 5px}
+  .node b{font-size:11px}
+  .node small{display:none}
+  .chain-center b{font-size:14px}
+  .chain-center small{font-size:7px}
+  .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  .foot-word{font-size:30vw;margin-top:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="m3 7.5 9 4.5 9-4.5M12 12v9"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7" r="3.2"/><path d="M21 20v-1.5a4 4 0 0 0-3-3.87M16.5 4.2a3.2 3.2 0 0 1 0 6.2"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2.5l2.2 11.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21 7H6"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M9 13h.01M15 13h.01M9 17h6"/><circle cx="12" cy="4" r="1"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><rect x="15" y="3" width="6" height="6" rx="1.5"/><path d="M9 6h3a3 3 0 0 1 3 3v6M6 9v6a3 3 0 0 0 3 3h6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18.5 16.5 19 18l1.5.5-1.5.5-.5 1.5-.5-1.5L16.5 18l1.5-.5z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.5 20 6v6c0 5-3.4 8.2-8 9.5C7.4 20.2 4 17 4 12V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Oplai 工作台 home">
+      <span class="logo-mark">OPC<span class="sep"></span><span class="l">L</span><span class="sep"></span>AI</span>
+      <span class="logo-txt"><b>Oplai 工作台</b><span>OPC Link AI</span></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#capability" data-zh="核心能力" data-en="Capabilities">核心能力</a>
+      <a href="#chain" data-zh="经营链路" data-en="The Chain">经营链路</a>
+      <a href="#usecase" data-zh="适用场景" data-en="Use Cases">适用场景</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button id="btnZh" class="on" onclick="setLang('zh')">中</button>
+        <button id="btnEn" onclick="setLang('en')">EN</button>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" onclick="openDownload()"><span data-zh="免费使用" data-en="Start free">免费使用</span><svg class="ico" style="width:15px;height:15px"><use href="#i-download"/></svg></button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu" onclick="toggleMenu()"><svg class="ico"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+  <div class="wrap mobile-menu" id="mobileMenu">
+    <a href="#capability" data-zh="核心能力" data-en="Capabilities">核心能力</a>
+    <a href="#chain" data-zh="经营链路" data-en="The Chain">经营链路</a>
+    <a href="#usecase" data-zh="适用场景" data-en="Use Cases">适用场景</a>
+    <a href="#" onclick="event.preventDefault();document.getElementById('mobileMenu').classList.remove('open');openDownload();" data-zh="免费使用" data-en="Start free">免费使用</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero-wrap">
+    <section class="hero">
+      <span class="hero-word" aria-hidden="true">OPLAI</span>
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow"><span class="dot"></span><span>OPLAI · OPC LINK AI</span><em>/ˈɒplaɪ/</em></div>
+          <h1>
+            <span class="line1" data-zh="单人成链，" data-en="One Merchant,">单人成链，</span>
+            <span class="line2" data-zh="智流自驱" data-en="Linked AI">智流自驱</span>
+          </h1>
+          <div class="slogan-en" data-zh="One Merchant, Linked AI · 面向一人商家的 AI 自动化链路工具" data-en="AI workflow infrastructure for one-person shops">One Merchant, Linked AI · 面向一人商家的 AI 自动化链路工具</div>
+          <p class="hero-desc" data-zh="Oplai 源自 OPC Link AI。用 AI 串联商品、客户、内容与订单，把散落的经营动作连成一条会自己跑起来的链路——单人小店，也能拥有系统化的 AI 能力。" data-en="Oplai stands for OPC Link AI. It connects products, customers, content and orders with AI, turning scattered daily tasks into a workflow that runs itself — so a one-person shop can operate with systematic AI capabilities.">Oplai 源自 OPC Link AI。用 AI 串联商品、客户、内容与订单，把散落的经营动作连成一条会自己跑起来的链路——单人小店，也能拥有系统化的 AI 能力。</p>
+          <div class="hero-actions">
+            <a href="#chain" class="btn btn-primary"><span data-zh="看它怎么串起来" data-en="See how it works">看它怎么串起来</span><svg class="ico" style="width:17px;height:17px"><use href="#i-arrow"/></svg></a>
+            <a href="#capability" class="btn btn-ghost" data-zh="三大核心能力" data-en="Core capabilities">三大核心能力</a>
+          </div>
+          <div class="hero-note"><svg class="ico"><use href="#i-shield"/></svg><span data-zh="独立开发 · 人工智能 · 欢迎合作" data-en="Independently built · AI · Open to collaboration">独立开发 · 人工智能 · 欢迎合作</span></div>
+        </div>
+
+        <div class="chain" aria-label="Oplai chain diagram">
+          <svg class="lines" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B6BFF"/><stop offset="1" stop-color="#3BE0C6"/></linearGradient>
+            </defs>
+            <circle class="orbit2" cx="200" cy="200" r="176"/>
+            <circle class="orbit" cx="200" cy="200" r="160"/>
+            <circle class="ring-a" cx="200" cy="200" r="160"/>
+            <circle class="ring-b" cx="200" cy="200" r="176"/>
+            <path class="glow" d="M200 200 C 168 160, 232 120, 200 76"/>
+            <path class="glow" d="M200 200 C 240 168, 280 232, 324 200"/>
+            <path class="glow" d="M200 200 C 232 240, 168 280, 200 324"/>
+            <path class="glow" d="M200 200 C 160 232, 120 168, 76 200"/>
+            <path class="flow" d="M200 200 C 168 160, 232 120, 200 76"/>
+            <path class="flow" d="M200 200 C 240 168, 280 232, 324 200"/>
+            <path class="flow" d="M200 200 C 232 240, 168 280, 200 324"/>
+            <path class="flow" d="M200 200 C 160 232, 120 168, 76 200"/>
+          </svg>
+          <div class="chain-center"><b>OPLAI</b><small>AI LAYER</small></div>
+          <div class="node n1"><svg class="ico"><use href="#i-box"/></svg><b data-zh="商品" data-en="Products">商品</b><small>PRODUCTS</small></div>
+          <div class="node n2"><svg class="ico"><use href="#i-users"/></svg><b data-zh="客户" data-en="Customers">客户</b><small>CUSTOMERS</small></div>
+          <div class="node n3"><svg class="ico"><use href="#i-pen"/></svg><b data-zh="内容" data-en="Content">内容</b><small>CONTENT</small></div>
+          <div class="node n4"><svg class="ico"><use href="#i-cart"/></svg><b data-zh="订单" data-en="Orders">订单</b><small>ORDERS</small></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="sec" id="brand">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag" data-zh="The Name" data-en="The Name">The Name</span>
+        <h2 data-zh="名字里的三层意思" data-en="What is in the name">名字里的三层意思</h2>
+        <p data-zh="OPC｜L｜AI，名字简单好记，意思也直白：为一个人的小店，把商品、客户、内容、订单连成一条线，让 AI 帮忙分担每天重复的事。开店还是原来的开法，只是多了一个搭把手的系统。" data-en="OPC | L | AI. A short, easy name for a simple idea: for a one-person shop, link products, customers, content and orders into one flow, and let AI take care of the repetitive work. You still run your shop the same way, just with a system lending a hand.">OPC｜L｜AI，名字简单好记，意思也直白：为一个人的小店，把商品、客户、内容、订单连成一条线，让 AI 帮忙分担每天重复的事。开店还是原来的开法，只是多了一个搭把手的系统。</p>
+      </div>
+      <div class="brand-strip reveal">
+        <div class="brand-cell">
+          <div class="k">OPC</div>
+          <div class="sub">One Person Company</div>
+          <p data-zh="一人商家、单人商事主体。你是老板，也是选品、客服、运营、售后的全部岗位。产品的一切设计，从这个前提出发。" data-en="One Person Company. You are the owner and also the buyer, support agent, marketer and after-sales team. Everything here starts from that reality.">一人商家、单人商事主体。你是老板，也是选品、客服、运营、售后的全部岗位。产品的一切设计，从这个前提出发。</p>
+        </div>
+        <div class="brand-cell">
+          <div class="k">L</div>
+          <div class="sub">Link</div>
+          <p data-zh="打通经营各个环节。商品、客户、内容、订单不再各管各的，而是连成一条可以往前走的线。" data-en="Linking every part of the operation. Products, customers, content and orders stop living in separate silos and become one continuous line.">打通经营各个环节。商品、客户、内容、订单不再各管各的，而是连成一条可以往前走的线。</p>
+        </div>
+        <div class="brand-cell">
+          <div class="k">AI</div>
+          <div class="sub">Intelligent Tools</div>
+          <p data-zh="智能体、知识库、自动化工作流。不是多一个聊天窗口，而是替你把重复的那部分跑起来。" data-en="AI agents, a knowledge base and automated workflows. Not another chat window, but the repetitive part of your work actually getting done.">智能体、知识库、自动化工作流。不是多一个聊天窗口，而是替你把重复的那部分跑起来。</p>
+        </div>
+      </div>
+      <div class="brand-foot reveal" data-zh="读音 /ˈɒplaɪ/ · 中文标识「OPLAI · OPC Link AI」 · 主 Slogan「单人成链，智流自驱」 / One Merchant, Linked AI" data-en="Pronounced /ˈɒplaɪ/ · Identity: OPLAI · OPC Link AI · Slogan: One Merchant, Linked AI">读音 /ˈɒplaɪ/ · 中文标识「OPLAI · OPC Link AI」 · 主 Slogan「单人成链，智流自驱」 / One Merchant, Linked AI</div>
+    </div>
+  </section>
+
+  <section class="sec sec-soft" id="capability">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag">Capabilities</span>
+        <h2 data-zh="三件工具，撑起一条链路" data-en="Three tools behind one chain">三件工具，撑起一条链路</h2>
+        <p data-zh="不堆功能，只解决一人商家最耗时的三件事：谁来做、依据什么做、怎么自动往下走。" data-en="No feature pile-up. Just the three things that cost a solo merchant the most time: who does the work, what it is based on, and how it keeps moving.">不堆功能，只解决一人商家最耗时的三件事：谁来做、依据什么做、怎么自动往下走。</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="card-icon"><svg class="ico"><use href="#i-bot"/></svg></div>
+          <h3><span data-zh="智能体" data-en="AI Agents">智能体</span><small>AI AGENTS</small></h3>
+          <p data-zh="按你的经营规则执行具体任务：整理商品资料、应答常见咨询、起草内容、跟进订单状态，各司其职，而不是每次都从头问一遍。" data-en="Agents that work by your rules: organizing product data, answering common inquiries, drafting content and tracking order status — each with a clear job, no starting from scratch every time.">按你的经营规则执行具体任务：整理商品资料、应答常见咨询、起草内容、跟进订单状态，各司其职，而不是每次都从头问一遍。</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg class="ico"><use href="#i-book"/></svg></div>
+          <h3><span data-zh="知识库" data-en="Knowledge Base">知识库</span><small>KNOWLEDGE BASE</small></h3>
+          <p data-zh="把商品参数、销售话术、售后规则、过往内容沉淀成可复用的店铺记忆。回答口径始终一致，换平台、换时间也不会走样。" data-en="Turn product specs, sales scripts, after-sales rules and past content into reusable shop memory. Answers stay consistent across channels and over time.">把商品参数、销售话术、售后规则、过往内容沉淀成可复用的店铺记忆。回答口径始终一致，换平台、换时间也不会走样。</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon"><svg class="ico"><use href="#i-flow"/></svg></div>
+          <h3><span data-zh="自动化工作流" data-en="Automated Workflows">自动化工作流</span><small>WORKFLOWS</small></h3>
+          <p data-zh="触发器 + 条件 + 动作，把跨环节的事串成流程。上新、咨询、发布、发货到点自动往下走，你只在需要判断的地方出手。" data-en="Trigger, condition, action. Cross-step work becomes a flow: listing, inquiry, publishing and fulfillment move on by themselves, and you step in only where judgment is needed.">触发器 + 条件 + 动作，把跨环节的事串成流程。上新、咨询、发布、发货到点自动往下走，你只在需要判断的地方出手。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="chain">
+    <div class="wrap">
+      <div class="chain-layout">
+        <div class="chain-text reveal">
+          <span class="tag">The Chain</span>
+          <h2 data-zh="四个环节，一条链路" data-en="Four parts, one chain">四个环节，一条链路</h2>
+          <p data-zh="一人商家的忙，往往不是事情多，而是环节之间的搬运全靠手动：商品信息要复制去写文案，客户问题要翻聊天记录，订单状态要挨个核。Oplai 把 AI 放在中间，负责理解、判断和流转。" data-en="A solo merchant is rarely busy because of the volume of work, but because moving information between steps is manual: copying product specs into copy, digging through chat history for answers, checking order status one by one. Oplai puts AI in the middle to understand, decide and move things along.">一人商家的忙，往往不是事情多，而是环节之间的搬运全靠手动：商品信息要复制去写文案，客户问题要翻聊天记录，订单状态要挨个核。Oplai 把 AI 放在中间，负责理解、判断和流转。</p>
+          <a href="#usecase" class="btn btn-light"><span data-zh="看看具体场景" data-en="See real scenarios">看看具体场景</span><svg class="ico" style="width:16px;height:16px"><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="reveal">
+          <div class="loop-list">
+            <div class="loop-item"><span class="num">1</span><div><h4 data-zh="商品" data-en="Products">商品</h4><p data-zh="资料结构化入库，卖点与参数随时可取。" data-en="Structured product data, specs and selling points ready to reuse.">资料结构化入库，卖点与参数随时可取。</p></div></div>
+            <div class="loop-item"><span class="num">2</span><div><h4 data-zh="客户" data-en="Customers">客户</h4><p data-zh="咨询统一口径应答，复杂的转给你。" data-en="Consistent answers to inquiries; complex ones escalate to you.">咨询统一口径应答，复杂的转给你。</p></div></div>
+            <div class="loop-item"><span class="num">3</span><div><h4 data-zh="内容" data-en="Content">内容</h4><p data-zh="基于商品与客群批量起草，排期跟进。" data-en="Drafted from product and audience context, then scheduled.">基于商品与客群批量起草，排期跟进。</p></div></div>
+            <div class="loop-item"><span class="num">4</span><div><h4 data-zh="订单" data-en="Orders">订单</h4><p data-zh="通知、状态同步、复购提醒自动触发。" data-en="Notifications, status sync and reorder reminders triggered automatically.">通知、状态同步、复购提醒自动触发。</p></div></div>
+          </div>
+          <div class="ai-bar">
+            <svg class="ico"><use href="#i-spark"/></svg>
+            <div><b data-zh="OPLAI · AI 链路层" data-en="OPLAI · AI Link Layer">OPLAI · AI 链路层</b><span data-zh="理解 → 判断 → 流转，让四个环节自己跑起来" data-en="Understand, decide, flow — the four parts keep moving on their own">理解 → 判断 → 流转，让四个环节自己跑起来</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-soft" id="usecase">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="tag">Use Cases</span>
+        <h2 data-zh="一天里，那些被省下来的动作" data-en="The tasks that disappear from your day">一天里，那些被省下来的动作</h2>
+        <p data-zh="没有宏大的改造，只是把每天重复四遍的事，交给链路。" data-en="No big transformation project. Just handing the four-times-a-day repetitions to the chain.">没有宏大的改造，只是把每天重复四遍的事，交给链路。</p>
+      </div>
+      <div class="case-grid">
+        <div class="case reveal"><svg class="ico"><use href="#i-box"/></svg><h4 data-zh="上新一个商品" data-en="Launch a product">上新一个商品</h4><div class="old" data-zh="手动写详情、卖点、多平台文案" data-en="Manually writing specs, pitches and channel copy">手动写详情、卖点、多平台文案</div><div class="new"><b data-zh="现在：" data-en="Now: ">现在：</b><span data-zh="一次录入，各渠道文案自动生成" data-en="enter once, channel-ready copy generated">一次录入，各渠道文案自动生成</span></div></div>
+        <div class="case reveal"><svg class="ico"><use href="#i-users"/></svg><h4 data-zh="客户来问" data-en="A customer asks">客户来问</h4><div class="old" data-zh="翻记录、凭记忆、回答每次都不一样" data-en="Searching chat history, answering from memory">翻记录、凭记忆、回答每次都不一样</div><div class="new"><b data-zh="现在：" data-en="Now: ">现在：</b><span data-zh="调知识库统一答复，例外转人工" data-en="knowledge base answers, exceptions escalate">调知识库统一答复，例外转人工</span></div></div>
+        <div class="case reveal"><svg class="ico"><use href="#i-pen"/></svg><h4 data-zh="内容要发" data-en="Time to publish">内容要发</h4><div class="old" data-zh="临时想选题，发不发全看当天精力" data-en="Scrambling for ideas, posting depends on energy">临时想选题，发不发全看当天精力</div><div class="new"><b data-zh="现在：" data-en="Now: ">现在：</b><span data-zh="按商品与客群批量起草并排期" data-en="batch drafts and a schedule built from your catalog">按商品与客群批量起草并排期</span></div></div>
+        <div class="case reveal"><svg class="ico"><use href="#i-cart"/></svg><h4 data-zh="订单进来" data-en="An order lands">订单进来</h4><div class="old" data-zh="挨个核状态、手动提醒、忘了复购" data-en="Checking status by hand, forgetting follow-ups">挨个核状态、手动提醒、忘了复购</div><div class="new"><b data-zh="现在：" data-en="Now: ">现在：</b><span data-zh="自动通知、状态同步、复购提醒" data-en="automatic alerts, status sync and reorder nudges">自动通知、状态同步、复购提醒</span></div></div>
+      </div>
+
+      <div style="height:44px"></div>
+      <div class="sec-head reveal" style="margin-bottom:30px">
+        <h2 data-zh="从散点经营，到系统化链路" data-en="From scattered tasks to a system">从散点经营，到系统化链路</h2>
+      </div>
+      <div class="compare">
+        <div class="compare-col bad reveal">
+          <h3><span class="badge" data-zh="Before" data-en="Before">Before</span><span data-zh="散点式经营" data-en="Scattered operation">散点式经营</span></h3>
+          <ul>
+            <li><svg class="ico"><use href="#i-x"/></svg><span data-zh="信息散在表格、聊天记录和脑子里" data-en="Information scattered across sheets, chats and memory">信息散在表格、聊天记录和脑子里</span></li>
+            <li><svg class="ico"><use href="#i-x"/></svg><span data-zh="每次上新都从头写一遍" data-en="Every new listing starts from a blank page">每次上新都从头写一遍</span></li>
+            <li><svg class="ico"><use href="#i-x"/></svg><span data-zh="客户问题靠记忆回答，口径不稳定" data-en="Answers depend on memory and vary over time">客户问题靠记忆回答，口径不稳定</span></li>
+            <li><svg class="ico"><use href="#i-x"/></svg><span data-zh="人一忙，链路就断在中间" data-en="The moment you get busy, the chain breaks">人一忙，链路就断在中间</span></li>
+          </ul>
+        </div>
+        <div class="compare-col good reveal">
+          <h3><span class="badge" data-zh="With Oplai" data-en="With Oplai">With Oplai</span><span data-zh="系统化 AI 链路" data-en="Systematic AI chain">系统化 AI 链路</span></h3>
+          <ul>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-zh="资料一次沉淀进知识库，多次复用" data-en="Knowledge captured once, reused everywhere">资料一次沉淀进知识库，多次复用</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-zh="流程固化为工作流，到点自动往下走" data-en="Workflows keep moving on their own">流程固化为工作流，到点自动往下走</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-zh="回答口径统一，过程可追溯" data-en="Consistent answers and a traceable history">回答口径统一，过程可追溯</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-zh="你只处理真正需要判断的那几件事" data-en="You only handle the calls that need judgment">你只处理真正需要判断的那几件事</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="cta reveal">
+      <h2 data-zh="单人成链，从今天开始" data-en="One merchant. One linked system.">单人成链，从今天开始</h2>
+      <p data-zh="把重复的事交给链路，把判断留给自己。" data-en="Hand the repetition to the chain. Keep the judgment for yourself.">把重复的事交给链路，把判断留给自己。</p>
+      <button type="button" class="btn btn-primary" onclick="openDownload()"><span data-zh="免费使用" data-en="Start free">免费使用</span><svg class="ico" style="width:17px;height:17px"><use href="#i-download"/></svg></button>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-top">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="f-logo" href="#top" aria-label="Oplai home">
+          <span class="logo-mark">OPC<span class="sep"></span><span class="l">L</span><span class="sep"></span>AI</span>
+          <b>Oplai 工作台</b>
+        </a>
+        <p class="f-tag" data-zh="为一个人的小店，补上系统化的 AI 能力。智能体、知识库、自动化工作流，把商品、客户、内容与订单串成一条会自己跑起来的链路。" data-en="Systematic AI for a one-person shop. Agents, a knowledge base and automated workflows connect products, customers, content and orders into one chain that runs itself.">为一个人的小店，补上系统化的 AI 能力。智能体、知识库、自动化工作流，把商品、客户、内容与订单串成一条会自己跑起来的链路。</p>
+      </div>
+      <div class="f-col">
+        <h5 data-zh="产品" data-en="Product">产品</h5>
+        <a href="#capability" data-zh="智能体" data-en="AI Agents">智能体</a>
+        <a href="#capability" data-zh="知识库" data-en="Knowledge Base">知识库</a>
+        <a href="#capability" data-zh="自动化工作流" data-en="Workflows">自动化工作流</a>
+        <a href="#chain" data-zh="AI 链路层" data-en="AI Link Layer">AI 链路层</a>
+      </div>
+      <div class="f-col">
+        <h5 data-zh="经营链路" data-en="The Chain">经营链路</h5>
+        <a href="#chain" data-zh="商品" data-en="Products">商品</a>
+        <a href="#chain" data-zh="客户" data-en="Customers">客户</a>
+        <a href="#chain" data-zh="内容" data-en="Content">内容</a>
+        <a href="#chain" data-zh="订单" data-en="Orders">订单</a>
+      </div>
+      <div class="f-col">
+        <h5 data-zh="适用场景" data-en="Use Cases">适用场景</h5>
+        <a href="#usecase" data-zh="商品上新" data-en="Launching products">商品上新</a>
+        <a href="#usecase" data-zh="客户咨询" data-en="Customer inquiries">客户咨询</a>
+        <a href="#usecase" data-zh="内容发布" data-en="Content publishing">内容发布</a>
+        <a href="#usecase" data-zh="订单跟进" data-en="Order follow-up">订单跟进</a>
+      </div>
+      <div class="f-col">
+        <h5 data-zh="关于" data-en="About">关于</h5>
+        <a href="#brand" data-zh="品牌释义" data-en="The name">品牌释义</a>
+        <a href="#brand" data-zh="读音与标识" data-en="Name &amp; identity">读音与标识</a>
+        <a href="#brand" data-zh="独立开发" data-en="Independently built">独立开发</a>
+        <a href="#" onclick="event.preventDefault();openDownload();" data-zh="免费使用" data-en="Start free">免费使用</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 OPLAI<i class="sep">·</i>OPC Link AI</span>
+      <span data-zh="独立开发 · 人工智能 · 欢迎合作" data-en="Independently built · AI · Open to collaboration">独立开发 · 人工智能 · 欢迎合作</span>
+    </div>
+  </div>
+  <div class="foot-word" aria-hidden="true">OPLAI</div>
+</footer>
+
+<div class="modal-mask" id="dlModal" role="dialog" aria-modal="true" aria-labelledby="dlTitle" onclick="if(event.target===this)closeDownload()">
+  <div class="modal">
+    <button type="button" class="modal-close" onclick="closeDownload()" aria-label="Close"><svg class="ico"><use href="#i-x"/></svg></button>
+    <h3 id="dlTitle" data-zh="免费使用" data-en="Start free">免费使用</h3>
+    <p class="modal-sub" data-zh="完全免费。选择你常用的网盘，获取 Oplai 安装包与配套资料。" data-en="Completely free. Pick your preferred drive to get the Oplai package and accompanying resources.">完全免费。选择你常用的网盘，获取 Oplai 安装包与配套资料。</p>
+    <div class="dl-list">
+      <div class="dl-card">
+        <div class="dl-logo baidu">百</div>
+        <div class="dl-info">
+          <b data-zh="百度网盘" data-en="Baidu Netdisk">百度网盘</b>
+          <span class="dl-status" id="dlStatus-baidu" data-zh="链接即将开放" data-en="Link coming soon">链接即将开放</span>
+        </div>
+        <a class="dl-btn off" id="dlBtn-baidu" aria-disabled="true"><span data-zh="暂未开放" data-en="Coming soon">暂未开放</span><svg class="ico"><use href="#i-external"/></svg></a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-logo quark">夸</div>
+        <div class="dl-info">
+          <b data-zh="夸克网盘" data-en="Quark Netdisk">夸克网盘</b>
+          <span class="dl-status" id="dlStatus-quark" data-zh="链接即将开放" data-en="Link coming soon">链接即将开放</span>
+        </div>
+        <a class="dl-btn off" id="dlBtn-quark" aria-disabled="true"><span data-zh="暂未开放" data-en="Coming soon">暂未开放</span><svg class="ico"><use href="#i-external"/></svg></a>
+      </div>
+    </div>
+    <div class="modal-foot" data-zh="如链接失效、需要提取码或其他网盘分流，请通过官网联系方式反馈。" data-en="If a link expires, needs an access code, or you need another mirror, please let us know through the contact channel on our site.">如链接失效、需要提取码或其他网盘分流，请通过官网联系方式反馈。</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var current = localStorage.getItem('oplai-lang') || 'zh';
+
+  window.setLang = function(lang){
+    current = lang;
+    localStorage.setItem('oplai-lang', lang);
+    document.documentElement.lang = (lang === 'zh' ? 'zh-CN' : 'en');
+    document.querySelectorAll('[data-zh][data-en]').forEach(function(el){
+      var v = el.getAttribute('data-' + lang);
+      if(v !== null) el.textContent = v;
+    });
+    document.getElementById('btnZh').classList.toggle('on', lang === 'zh');
+    document.getElementById('btnEn').classList.toggle('on', lang === 'en');
+    document.title = lang === 'zh'
+      ? 'Oplai｜面向一人商家的 AI 自动化链路工具'
+      : 'Oplai - AI Workflow for Solo Merchants';
+    var meta = document.querySelector('meta[name="description"]');
+    if(meta) meta.setAttribute('content', lang === 'zh'
+      ? 'Oplai 源自 OPC Link AI。面向一人商家，用 AI 串联商品、客户、内容与订单，提供智能体、知识库与自动化工作流。'
+      : 'Oplai stands for OPC Link AI. Built for solo merchants, connecting products, customers, content and orders with AI agents, a knowledge base and automated workflows.');
+  };
+
+  window.toggleMenu = function(){
+    document.getElementById('mobileMenu').classList.toggle('open');
+  };
+
+  // language
+  document.getElementById('btnZh').addEventListener('click', function(){ setLang('zh'); });
+  document.getElementById('btnEn').addEventListener('click', function(){ setLang('en'); });
+  setLang(current);
+
+  // clipboard fallback, used by the download modal access-code copy
+  function fallback(text, cb){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); cb(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  // mobile menu close on navigation
+  document.querySelectorAll('#mobileMenu a').forEach(function(a){
+    a.addEventListener('click', function(){ document.getElementById('mobileMenu').classList.remove('open'); });
+  });
+
+  // ---------- download links ----------
+  // 把两个网盘分享链接填进 url 即可生效；code 为提取码，没有就留空字符串。
+  var DOWNLOAD_LINKS = {
+    baidu: { url: '', code: '' },
+    quark: { url: '', code: '' }
+  };
+
+  function copyPlain(text){
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).catch(function(){ fallback(text, function(){}); });
+    } else { fallback(text, function(){}); }
+  }
+
+  function applyLink(key){
+    var cfg = DOWNLOAD_LINKS[key];
+    var btn = document.getElementById('dlBtn-' + key);
+    var status = document.getElementById('dlStatus-' + key);
+    if(!btn || !status) return;
+    var label = btn.querySelector('span');
+
+    if(cfg.url){
+      btn.setAttribute('href', cfg.url);
+      btn.setAttribute('target', '_blank');
+      btn.setAttribute('rel', 'noopener noreferrer');
+      btn.classList.remove('off');
+      btn.removeAttribute('aria-disabled');
+      label.setAttribute('data-zh', '打开链接');
+      label.setAttribute('data-en', 'Open link');
+      if(cfg.code){
+        status.setAttribute('data-zh', '提取码 ' + cfg.code + ' · 点击复制');
+        status.setAttribute('data-en', 'Code: ' + cfg.code + ' · click to copy');
+        status.classList.add('has-code');
+        status.onclick = function(){
+          copyPlain(cfg.code);
+          var old = status.getAttribute('data-' + current);
+          status.textContent = (current === 'zh' ? '已复制提取码' : 'Code copied');
+          setTimeout(function(){ status.textContent = old; }, 1400);
+        };
+      } else {
+        status.setAttribute('data-zh', '无需提取码');
+        status.setAttribute('data-en', 'No access code');
+        status.classList.remove('has-code');
+        status.onclick = null;
+      }
+    } else {
+      btn.removeAttribute('href');
+      btn.removeAttribute('target');
+      btn.classList.add('off');
+      btn.setAttribute('aria-disabled', 'true');
+      label.setAttribute('data-zh', '暂未开放');
+      label.setAttribute('data-en', 'Coming soon');
+      status.setAttribute('data-zh', '链接即将开放');
+      status.setAttribute('data-en', 'Link coming soon');
+      status.classList.remove('has-code');
+      status.onclick = null;
+    }
+    label.textContent = label.getAttribute('data-' + current);
+    status.textContent = status.getAttribute('data-' + current);
+  }
+
+  function renderLinks(){ applyLink('baidu'); applyLink('quark'); }
+
+  var lastFocus = null;
+  window.openDownload = function(){
+    renderLinks();
+    lastFocus = document.activeElement;
+    document.getElementById('dlModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    var close = document.querySelector('.modal-close');
+    if(close) close.focus();
+  };
+  window.closeDownload = function(){
+    document.getElementById('dlModal').classList.remove('open');
+    document.body.style.overflow = '';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  };
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.getElementById('dlModal').classList.contains('open')) closeDownload();
+  });
+  renderLinks();
+
+  // reveal on scroll
+  var items = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    items.forEach(function(el, i){ el.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(el); });
+  } else {
+    items.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // nav highlight
+  var links = document.querySelectorAll('.nav-links a');
+  var sections = Array.prototype.map.call(links, function(a){ return document.querySelector(a.getAttribute('href')); });
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY + 130;
+    var idx = -1;
+    sections.forEach(function(s, i){
+      if(s && (s.getBoundingClientRect().top + window.scrollY) <= y) idx = i;
+    });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+  }, { passive:true });
+})();
+</script>
+</body>
+</html>
