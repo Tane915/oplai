@@ -634,7 +634,7 @@ h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-
   // ---------- download links ----------
   // 把两个网盘分享链接填进 url 即可生效；code 为提取码，没有就留空字符串。
   var DOWNLOAD_LINKS = {
-    baidu: { url: 'https://pan.baidu.com/s/1Sh4m_ct76Zda9i7C_WUtmg', code: '7ck7' },
+    baidu: { url: 'https://pan.baidu.com/s/1Sh4m_ct76Zda9i7C_WUtmg?pwd=7ck7', code: '', auto: true },
     quark: { url: 'https://pan.quark.cn/s/775b025207e8', code: '' }
   };
 
@@ -669,6 +669,11 @@ h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-
           status.textContent = (current === 'zh' ? '已复制提取码' : 'Code copied');
           setTimeout(function(){ status.textContent = old; }, 1400);
         };
+      } else if(cfg.auto){
+        status.setAttribute('data-zh', '链接已含提取码，自动填入');
+        status.setAttribute('data-en', 'Access code included in link');
+        status.classList.remove('has-code');
+        status.onclick = null;
       } else {
         status.setAttribute('data-zh', '无需提取码');
         status.setAttribute('data-en', 'No access code');
