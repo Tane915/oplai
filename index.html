@@ -321,7 +321,7 @@ h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-
         <button id="btnZh" class="on" onclick="setLang('zh')">中</button>
         <button id="btnEn" onclick="setLang('en')">EN</button>
       </div>
-      <button type="button" class="btn btn-primary btn-sm" onclick="openDownload()"><span data-zh="免费使用" data-en="Start free">免费使用</span><svg class="ico" style="width:15px;height:15px"><use href="#i-download"/></svg></button>
+      <a class="btn btn-primary btn-sm" id="navFeedback" href="https://my.feishu.cn/share/base/shrcnRsQYPXhhI873D61UxrwamW" target="_blank" rel="noopener noreferrer"><span data-zh="意见反馈" data-en="Feedback">意见反馈</span><svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a>
       <button class="menu-btn" id="menuBtn" aria-label="Menu" onclick="toggleMenu()"><svg class="ico"><use href="#i-menu"/></svg></button>
     </div>
   </div>
@@ -347,7 +347,7 @@ h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-
           <div class="slogan-en" data-zh="One Merchant, Linked AI · 面向一人商家的 AI 自动化链路工具" data-en="AI workflow infrastructure for one-person shops">One Merchant, Linked AI · 面向一人商家的 AI 自动化链路工具</div>
           <p class="hero-desc" data-zh="Oplai 源自 OPC Link AI。用 AI 串联商品、客户、内容与订单，把散落的经营动作连成一条会自己跑起来的链路——单人小店，也能拥有系统化的 AI 能力。" data-en="Oplai stands for OPC Link AI. It connects products, customers, content and orders with AI, turning scattered daily tasks into a workflow that runs itself — so a one-person shop can operate with systematic AI capabilities.">Oplai 源自 OPC Link AI。用 AI 串联商品、客户、内容与订单，把散落的经营动作连成一条会自己跑起来的链路——单人小店，也能拥有系统化的 AI 能力。</p>
           <div class="hero-actions">
-            <a href="#chain" class="btn btn-primary"><span data-zh="看它怎么串起来" data-en="See how it works">看它怎么串起来</span><svg class="ico" style="width:17px;height:17px"><use href="#i-arrow"/></svg></a>
+            <a href="#" onclick="event.preventDefault();openDownload();" class="btn btn-primary"><span data-zh="免费下载" data-en="Download free">免费下载</span><svg class="ico" style="width:17px;height:17px"><use href="#i-download"/></svg></a>
             <a href="#capability" class="btn btn-ghost" data-zh="三大核心能力" data-en="Core capabilities">三大核心能力</a>
           </div>
           <div class="hero-note"><svg class="ico"><use href="#i-shield"/></svg><span data-zh="独立开发 · 人工智能 · 欢迎合作" data-en="Independently built · AI · Open to collaboration">独立开发 · 人工智能 · 欢迎合作</span></div>
@@ -544,7 +544,7 @@ h2{font-size:clamp(27px,3.1vw,40px);line-height:1.28;letter-spacing:-.03em;font-
       </div>
       <div class="f-col">
         <h5 data-zh="关于" data-en="About">关于</h5>
-        <a href="#brand" data-zh="品牌释义" data-en="The name">品牌释义</a>
+        <a href="#brand" data-zh="产品释义" data-en="The product">产品释义</a>
         <a href="#brand" data-zh="读音与标识" data-en="Name &amp; identity">读音与标识</a>
         <a href="#brand" data-zh="独立开发" data-en="Independently built">独立开发</a>
         <a href="#" onclick="event.preventDefault();openDownload();" data-zh="免费使用" data-en="Start free">免费使用</a>
